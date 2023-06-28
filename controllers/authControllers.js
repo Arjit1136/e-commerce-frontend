@@ -35,7 +35,7 @@ export const login=async (req,res)=>{
     const user= await User.findOne({email:email})
     if(!user) return res.status(400).json({ msg: 'User does not exist.' })
     const isMatch=await bcrypt.compare(password,user.password)
-    if(!isMatch) res.status(400).json({msg:"Invalid Credentials"})
+    if(!isMatch) return res.status(400).json({msg:"Invalid Credentials"})
     const token=jwt.sign({id:user._id},process.env.JWT_SECRET)
     const { password: _, ...newUser } = user.toObject()
     res.status(201).json({ token, newUser })
